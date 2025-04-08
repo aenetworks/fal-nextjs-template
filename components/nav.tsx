@@ -58,6 +58,26 @@ export function Nav() {
           </p>
         </Link>
         <Link
+          href="/cloudinary"
+          rel="noopener noreferrer"
+        >
+          <p
+            className='cursor-pointer text-sm ml-5 text-muted-foreground hover:text-foreground'
+          >
+            cloudinary
+          </p>
+        </Link>
+        <Link
+          href="/contentful"
+          rel="noopener noreferrer"
+        >
+          <p
+            className='cursor-pointer text-sm ml-5 text-muted-foreground hover:text-foreground'
+          >
+            contentful
+          </p>
+        </Link>
+        <Link
           href="https://github.com/dabit3/model-playground"
           target="_blank"
           rel="noopener noreferrer"
