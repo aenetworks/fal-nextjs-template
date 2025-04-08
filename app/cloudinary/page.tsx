@@ -640,7 +640,7 @@ export default function CloudinaryPage() {
         !isRealTime && (
           <Button
             onClick={() => generate()}
-            disabled={searchingCloudinary || updating}
+            disabled={searchingCloudinary || !!updating}
             className='
             ml-0 md:ml-2
             w-full md:w-[200px]
