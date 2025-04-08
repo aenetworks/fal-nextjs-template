@@ -41,7 +41,7 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
     return data.openGraphDescription;
   } catch (err) {
     // Check if this is an abort error (timeout)
-    if (err.name === 'AbortError') {
+    if (err === 'AbortError') {
       console.error('Request timed out when fetching from Contentful');
       throw new Error('Request timed out. Please try again later.');
     }
@@ -243,7 +243,7 @@ export default function ContentfulPage() {
       console.log('err : ', err)
       setUpdating(null)
       setSearchingContentful(false)
-      toast('Error: ' + (err.message || 'Failed to fetch content'))
+      toast('Error: ' + (err || 'Failed to fetch content'))
     }
   }
 
@@ -315,14 +315,14 @@ export default function ContentfulPage() {
           console.error('API Error:', apiError);
           setUpdating(null)
           setSearchingContentful(false)
-          toast('API Error: ' + (apiError.message || 'Failed to generate content with the AI model'));
+          toast('API Error: ' + (apiError || 'Failed to generate content with the AI model'));
         }
       }
     } catch (err) {
       console.log('err : ', err)
       setUpdating(null)
       setSearchingContentful(false)
-      toast('Error: ' + (err.message || 'Failed to generate content'));
+      toast('Error: ' + (err || 'Failed to generate content'));
     }
   }
 
