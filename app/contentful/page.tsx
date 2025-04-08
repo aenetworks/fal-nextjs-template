@@ -519,7 +519,7 @@ export default function ContentfulPage() {
           {/* Fetch Slug button */}
           <Button
             onClick={fetchSlugContent}
-            disabled={searchingContentful || updating}
+            disabled={searchingContentful || !!updating}
             className='
             ml-0 md:ml-2
             w-full md:w-[150px]
@@ -576,7 +576,7 @@ export default function ContentfulPage() {
         {!isRealTime && (
           <Button
             onClick={() => generate()}
-            disabled={searchingContentful || updating}
+            disabled={searchingContentful || !!updating}
             className='
             w-full md:w-[200px]
             mt-2

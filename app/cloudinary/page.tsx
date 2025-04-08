@@ -293,7 +293,7 @@ export default function CloudinaryPage() {
       console.log('err : ', err)
       setUpdating(null)
       setSearchingCloudinary(false)
-      toast('Error: ' + (err.message || 'Failed to generate content'));
+      toast('Error: ' + (err || 'Failed to generate content'));
     }
   }
 
