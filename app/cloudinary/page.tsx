@@ -574,7 +574,7 @@ export default function CloudinaryPage() {
             <>
               <Input
                 onChange={e => setKeywords(e.target.value)}
-                placeholder='Cloudinary Search Keywords'
+                placeholder='Keyword'
                 value={keywords}
                 className='
                 w-full md:w-[200px]

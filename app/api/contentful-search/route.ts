@@ -42,8 +42,8 @@ export async function POST(request: Request) {
       openGraphDescription = response.items[0].fields.openGraphDescription;
       
       // If not found, try nested path
-      if (!openGraphDescription && response.items[0].fields.meta && response.items[0].fields.meta.fields) {
-        openGraphDescription = response.items[0].fields.meta.fields.openGraphDescription;
+      if (!openGraphDescription) {
+        openGraphDescription = "no description found";
       }
     } catch (e) {
       console.error('Error extracting openGraphDescription:', e);
