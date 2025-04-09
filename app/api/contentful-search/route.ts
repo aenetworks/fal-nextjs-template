@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       'query': slug
     });
 
-    console.error('Response:', JSON.stringify(response));
+    // console.error('Response:', JSON.stringify(response));
     
     // Check if we got any results
     if (response.items.length === 0) {
@@ -41,6 +41,7 @@ export async function POST(request: NextRequest) {
     
     try {
       // Try direct path first
+      console.error('Response:', JSON.stringify(response.items));
       openGraphDescription = response.items[0].fields.openGraphDescription;
       
       // If not found, try nested path
