@@ -37,6 +37,7 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
     }
     
     const data = await response.json();
+    console.error(data)
     if (!data.openGraphDescription) {
       throw new Error('No content description found');
     }
