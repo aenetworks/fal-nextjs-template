@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       'query': slug
     });
 
-    console.error('Response:', response);
+    console.error('Response:', JSON.stringify(response));
     
     // Check if we got any results
     if (response.items.length === 0) {
