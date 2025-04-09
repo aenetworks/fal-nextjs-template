@@ -15,7 +15,6 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
   try {
     // Create an AbortController with a 60-second timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 300000); // 60 seconds timeout
     
     const response = await fetch('/api/contentful-search', {
       method: 'POST',
@@ -28,9 +27,6 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
       body: JSON.stringify({ slug }),
       signal: controller.signal,
     });
-    
-    // Clear the timeout to prevent memory leaks
-    clearTimeout(timeoutId);
     
     if (!response.ok) {
       throw new Error('Failed to fetch content from Contentful');
