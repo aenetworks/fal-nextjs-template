@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 cloudinary.config({
   cloud_name: 'aenetworks',
@@ -35,4 +35,10 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+}
+
+export const OPTIONS = async (request: NextRequest) => {
+  return new NextResponse('', {
+    status: 200
+  })
 }

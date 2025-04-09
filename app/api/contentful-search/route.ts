@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from 'contentful';
 
 // Create Contentful client
@@ -65,4 +65,10 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
+}
+
+export const OPTIONS = async (request: NextRequest) => {
+  return new NextResponse('', {
+    status: 200
+  })
 }
