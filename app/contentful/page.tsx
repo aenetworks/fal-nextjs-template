@@ -13,9 +13,6 @@ import * as fal from '@fal-ai/serverless-client'
 // Contentful search function
 const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
   try {
-    // Create an AbortController with a 60-second timeout
-    const controller = new AbortController();
-    
     const response = await fetch('/api/contentful-search', {
       method: 'POST',
       headers: {
@@ -25,7 +22,6 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
         "Referrer-Policy": "no-referrer-when-downgrade"
       },
       body: JSON.stringify({ slug }),
-      signal: controller.signal,
     });
     
     if (!response.ok) {

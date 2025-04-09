@@ -23,6 +23,8 @@ export async function POST(request: NextRequest) {
     const response = await client.getEntries({
       'query': slug
     });
+
+    console.error('Response:', response);
     
     // Check if we got any results
     if (response.items.length === 0) {
