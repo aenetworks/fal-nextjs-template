@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET || 'abc',
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { query = 'nature', maxResults = 20 } = await request.json();
     

@@ -7,7 +7,7 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || 'access-token', // Will use environment variable or fallback
 });
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const { slug } = await request.json();
     
