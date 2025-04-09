@@ -20,7 +20,7 @@ const searchCloudinaryImages = async (query = 'nature', maxResults = 20) => {
       headers: {
         'Content-Type': 'application/json',
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Referrer-Policy": "no-referrer-when-downgrade"
       },
       body: JSON.stringify({ query, maxResults }),

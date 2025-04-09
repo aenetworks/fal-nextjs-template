@@ -21,6 +21,9 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Referrer-Policy": "no-referrer-when-downgrade"
       },
       body: JSON.stringify({ slug }),
       signal: controller.signal,
