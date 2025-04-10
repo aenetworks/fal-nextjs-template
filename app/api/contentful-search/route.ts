@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from 'contentful';
 
+const compromise = require('compromise');
+
 // Create Contentful client
 const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID || 'my-space-id', // Will use environment variable or fallback
