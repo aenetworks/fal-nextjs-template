@@ -7,6 +7,49 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || 'access-token', // Will use environment variable or fallback
 });
 
+function extractTextFromJson(jsonData) {
+  let fullText = "";
+  
+  // Process document content, which is an array of blocks
+  if (jsonData.content && Array.isArray(jsonData.content)) {
+    jsonData.content.forEach(block => {
+      // Skip embedded-entry-block which doesn't contain text
+      if (block.nodeType === "embedded-entry-block") {
+        return;
+      }
+      
+      // Process paragraph blocks
+      if (block.nodeType === "paragraph" && block.content) {
+        const paragraphText = extractTextFromContent(block.content);
+        if (paragraphText) {
+          fullText += paragraphText + "\n";
+        }
+      }
+    });
+  }
+  
+  return fullText;
+}
+
+function extractTextFromContent(contentArray) {
+  let text = "";
+  
+  if (!Array.isArray(contentArray)) {
+    return text;
+  }
+  
+  contentArray.forEach(item => {
+    if (item.nodeType === "text" && item.value) {
+      text += item.value;
+    } else if (item.nodeType === "hyperlink" && item.content) {
+      // For hyperlinks, extract text from their content
+      text += extractTextFromContent(item.content);
+    }
+  });
+  
+  return text;
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { slug } = await request.json();
@@ -23,8 +66,6 @@ export async function POST(request: NextRequest) {
     const response = await client.getEntries({
       'query': slug
     });
-
-    // console.error('Response:', JSON.stringify(response));
     
     // Check if we got any results
     if (response.items.length === 0) {
@@ -34,32 +75,15 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Extract the OpenGraph description
-    // Note: The path to openGraphDescription may vary based on your Contentful content model
-    // We try both common paths
-    let openGraphDescription;
-    
-    try {
-      // Try direct path first
-      console.error('Response:', JSON.stringify(response.items));
-      openGraphDescription = response.items[0].fields.openGraphDescription;
-      
-      // If not found, try nested path
-      if (!openGraphDescription) {
-        openGraphDescription = "no description found";
-      }
-    } catch (e) {
-      console.error('Error extracting openGraphDescription:', e);
+    const contentData = response.items[0].fields.content;
+
+    let fullText = extractTextFromJson(contentData);
+
+    if (!fullText) {
+      fullText = "no description found";
     }
     
-    if (!openGraphDescription) {
-      return NextResponse.json(
-        { error: 'No openGraphDescription found in content' },
-        { status: 404 }
-      );
-    }
-    
-    return NextResponse.json({ openGraphDescription });
+    return NextResponse.json({ fullText });
     
   } catch (err) {
     console.error('Error fetching from Contentful:', err);

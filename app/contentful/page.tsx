@@ -29,12 +29,9 @@ const fetchContentfulData = async (slug = 'battle-of-shiloh-concludes') => {
     }
     
     const data = await response.json();
-    console.error(data)
-    if (!data.openGraphDescription) {
-      throw new Error('No content description found');
-    }
+    console.log(data)
     
-    return data.openGraphDescription;
+    return data.fullText;
   } catch (err) {
     // Check if this is an abort error (timeout)
     if (err === 'AbortError') {
