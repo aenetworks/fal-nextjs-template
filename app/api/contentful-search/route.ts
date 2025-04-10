@@ -7,6 +7,74 @@ const client = createClient({
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN || 'access-token', // Will use environment variable or fallback
 });
 
+function sanitizeContentForAI(text) {
+  // Use compromise to identify people's names
+  let doc = compromise(text);
+  
+  // Get people, organizations, and places
+  let people = doc.people().out('array');
+  let orgs = doc.organizations().out('array');
+  let places = doc.places().out('array');
+  
+  console.log("Detected people:", JSON.stringify(people));
+  console.log("Detected organizations:", JSON.stringify(orgs));
+  
+  // Create a map to store replacements for consistency
+  let replacementMap = {};
+  
+  // Process people names first
+  people.forEach(person => {
+    // Skip common words that might be misidentified as names
+    if (['The', 'I', 'You', 'We', 'They'].includes(person)) {
+      return;
+    }
+    
+    // Clean the entity name from trailing punctuation
+    const cleanPerson = person.replace(/[,;:.!?]$/, '').trim();
+    if (!cleanPerson) return;
+    
+    // Create a replacement
+    const nameParts = cleanPerson.split(/\s+/);
+    if (nameParts.length === 1) {
+      replacementMap[cleanPerson] = "the individual";
+    } else {
+      replacementMap[cleanPerson] = "the historical figure";
+    }
+  });
+  
+  // Process organizations
+  orgs.forEach(org => {
+    // Clean the entity name
+    const cleanOrg = org.replace(/[,;:.!?]$/, '').trim();
+    if (!cleanOrg) return;
+    
+    // Don't replace if it's a place
+    if (places.some(place => place.includes(cleanOrg) || cleanOrg.includes(place))) {
+      return;
+    }
+    
+    replacementMap[cleanOrg] = "the company";
+  });
+  
+  // Sort replacements by length (longest first) to prevent partial replacements
+  const sortedEntities = Object.keys(replacementMap).sort((a, b) => b.length - a.length);
+  
+  // Apply replacements
+  let sanitizedText = text;
+  sortedEntities.forEach(entity => {
+    // Escape special regex characters in the entity name
+    const escapedEntity = entity.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    
+    // Create regex that handles word boundaries but also catches names with punctuation
+    const regex = new RegExp(`\\b${escapedEntity}\\b|${escapedEntity}(?=,|;|\\.|:|\\?|!)`, 'g');
+    
+    sanitizedText = sanitizedText.replace(regex, replacementMap[entity]);
+  });
+  
+  console.log("Applied replacements:", JSON.stringify(replacementMap));
+  return sanitizedText;
+}
+
 function extractTextFromJson(jsonData) {
   let fullText = "";
   
@@ -82,6 +150,8 @@ export async function POST(request: NextRequest) {
     if (!fullText) {
       fullText = "no description found";
     }
+
+    fullText = sanitizeContentForAI(fullText);
     
     return NextResponse.json({ fullText });
     
