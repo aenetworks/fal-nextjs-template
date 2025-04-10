@@ -18,9 +18,6 @@ function sanitizeContentForAI(text) {
   let orgs = doc.organizations().out('array');
   let places = doc.places().out('array');
   
-  console.log("Detected people:", JSON.stringify(people));
-  console.log("Detected organizations:", JSON.stringify(orgs));
-  
   // Create a map to store replacements for consistency
   let replacementMap = {};
   

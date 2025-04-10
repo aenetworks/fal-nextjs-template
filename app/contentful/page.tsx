@@ -73,10 +73,6 @@ const models = [
     label: 'Gen-2 Video'
   },
   {
-    value: 'veo2',
-    label: 'Veo-2 Video'
-  },
-  {
     value: 'pika-labs-video',
     label: 'Pika Labs Video'
   },
@@ -619,7 +615,9 @@ function fetchModelParams(model: string, input:string, url?: string) {
         model_name: 'fal-ai/veo2',
         inputs: {
           input: {
-            image_url: url
+            prompt: input,
+            aspect_ratio: '16:9',
+            duration: '8s',
           }
         }
       }
@@ -642,8 +640,8 @@ function fetchModelParams(model: string, input:string, url?: string) {
         inputs: {
           input: {
             prompt: input,
-            image_url: url,
-            mode: "video"
+            aspect_ratio: '16:9',
+            duration: '8s',
           }
         }
       }
@@ -677,8 +675,8 @@ function fetchModelParams(model: string, input:string, url?: string) {
         inputs: {
           input: {
             prompt: input,
-            image_url: url,
-            mode: "video"
+            aspect_ratio: '16:9',
+            duration: '8s',
           }
         }
       }
@@ -689,8 +687,8 @@ function fetchModelParams(model: string, input:string, url?: string) {
         inputs: {
           input: {
             prompt: input,
-            image_url: url,
-            mode: "video"
+            aspect_ratio: '16:9',
+            duration: '8s',
           }
         }
       }
@@ -701,8 +699,8 @@ function fetchModelParams(model: string, input:string, url?: string) {
         inputs: {
           input: {
             prompt: input,
-            image_url: url,
-            mode: "video"
+            aspect_ratio: '16:9',
+            duration: '8s',
           }
         }
       }
@@ -791,18 +789,6 @@ function fetchModelParams(model: string, input:string, url?: string) {
           input: {
             image_url: url,
             prompt: input
-          }
-        }
-      }
-      case 'veo2':
-      return {
-        type: 'subscribe',
-        model_name: 'fal-ai/veo2',
-        inputs: {
-          input: {
-            prompt: input,
-            aspect_ratio: '16:9',
-            duration: '8s',
           }
         }
       }
